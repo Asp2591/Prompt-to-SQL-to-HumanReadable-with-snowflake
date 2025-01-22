@@ -1,1 +1,1 @@
-# Prompt-to-SQL-to-HumanReadable-with-snowflake
+# Prompt-to-SQL-to-HumanReadable-with-snowflake  (QueryCraft)

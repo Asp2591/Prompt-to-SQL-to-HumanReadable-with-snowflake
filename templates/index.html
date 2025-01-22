@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QueryCraft</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #d6ec5c;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .container {
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            max-width: 400px;
+            text-align: center;
+        }
+        textarea {
+            width: 95%;
+            height: 100px;
+            margin-bottom: 10px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 1rem;
+        }
+        select {
+            width: 95%;
+            margin-bottom: 10px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 1rem;
+        }
+        button {
+            background-color: #007bff;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            font-size: 1rem;
+            cursor: pointer;
+        }
+        .output {
+            margin-top: 20px;
+            padding: 10px;
+            background: #f1f1f1;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>QueryCraft</h1>
+        <select id="table-select">
+            <option value="vijay_table" selected>vijay_table</option>
+            <option value="sales_table">sales_table</option>
+            <option value="customer_table">customer</option>
+            <option value="inventory_table">inventory_table</option>
+        </select>
+        <textarea id="prompt" placeholder="Enter your prompt here..."></textarea>
+        <button id="generate" onclick="callAPI()">Generate</button>
+        <div class="output" id="output"></div>
+    </div>
+    <script>
+        async function callAPI() {
+            const prompt = document.getElementById("prompt").value.trim();
+            const table = document.getElementById("table-select").value;
+            const outputDiv = document.getElementById("output");
+
+            // Clear previous output
+            outputDiv.textContent = "";
+
+            if (!prompt) {
+                outputDiv.textContent = "Please enter a prompt.";
+                return;
+            }
+
+            // Make API call
+            try {
+                const response = await fetch("/prompt-to-query", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ prompt, table }),
+                });
+
+                if (!response.ok) {
+                    throw new Error("Error: " + response.statusText);
+                }
+
+                const data = await response.json();
+                outputDiv.textContent = data.formatted_response;
+            } catch (error) {
+                outputDiv.textContent = "Error: " + error.message;
+            }
+        }
+    </script>
+</body>
+</html>

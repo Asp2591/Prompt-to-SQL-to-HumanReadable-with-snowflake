@@ -1,0 +1,10 @@
+google-generativeai 
+google-auth
+fastapi 
+uvicorn 
+snowflake-connector-python 
+google-generativeai 
+python-multipart
+python-dotenv
+Jinja2
+
